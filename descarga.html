@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="style/style.css">
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Monoton&display=swap" rel="stylesheet">  
+    <link href="css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <script src="js/bootstrap-datetimepicker.min.js"></script>
 
     <title>Ground Zero</title>
   </head>
@@ -20,6 +22,7 @@
           <a class="navbar-brand" href="#">
             <img src="img/GZ-logo.png " style ="width: 50%; border-radius: 6px; opacity: 0.85;" alt="">
           </a>
+          <h1>Balances</h1>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -31,7 +34,28 @@
       </nav>  
 </header>    
 <main class="pt-5">
-<button class="navbar-toggler mb-5  " type="button" data-bs-toggle="collapse" id="GetFile">Download</button>
+  <a class="px-1 btn-primary" href="http://54.243.203.166:8090/api/balances/pdf/generate/">
+    <img src="img/face.png" alt="">Balance Mensual</a>
+    <a class="px-1 btn-primary" href="http://54.243.203.166:8090/api/balances/pdf/generate/30-06-2022">
+      <img src="img/face.png" alt="">Balance Diario</a>
+<form class="row g-3">
+  <div class="col-md-3">
+      <label class="form-label">Fecha Creación Desde</label>
+      <input type="date" class="form-control" id="creationDateFromCampaign"/>
+  </div>
+  <div class="col-md-3">
+      <label class="form-label">Fecha Creación Hasta</label>
+      <input type="date" class="form-control" id="creationDateToCampaign"/>
+  </div>
+  <div class="col-12" style="width: 100%; text-align: center;">
+      <br> <br>
+      <button  type="button"  class="btn btn-primary" onclick="myFunction()" id="buscar">Buscar</button>
+      <br> <br>
+  </div>
+</form>
+<table class="table" id="tableCampaigns">
+
+</table>
 </main>
 <footer class="foter bg-dark text-white px-5 py-5 " >
   <div class="row">
@@ -53,9 +77,8 @@
        <br><br>
        Caracas | Venezuela
      </h5>
-     <a class="px-1" href="http://www-facebook.com">
-      <img src="img/face.png" alt=""></a>
-    <a class="px-1" href="https://www.instagram.com">
+
+    <a class="px-1" href="http://54.243.203.166:8090/api/balances/pdf/generate">
       <img src="img/instagram.png" alt=""></a>
     <a class="px-1" href="https://www.pinterest.cl/">
       <img src="img/pin.png" alt=""></a>
@@ -92,6 +115,7 @@
  <div class="col-sm-6 col-xs-12 text-muted text-center">
   <h5>&copy; 2017 Todos los derechos reservados. Sitio elaborado por la Compañía</h5>
   </div>
+  <input type="button" value="Buscador" class="buscador" id="mibuscador"/>
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta3/dist/js/bootstrap.bundle.min.js" integrity="sha384-JEW9xMcG8R+pH31jmWH6WWP0WintQrMb4s7ZOdauHnUtxwoG2vI5DkLtS3qm9Ekf" crossorigin="anonymous"></script>
@@ -99,26 +123,29 @@
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="js/formContacto.js"></script>
 <script src="js/index.js"></script>   
-
+<!-- Minified Bootstrap CSS -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<!-- Minified JS library -->
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<!-- Minified Bootstrap JS -->
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>
 </html>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
 <script>
-$('#GetFile').on('click', function () {
-  fetch('https://jsonplaceholder.typicode.com/todos/1')
-  .then(resp => resp.blob())
-  .then(blob => {
-  const url = window.URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  a.style.display = 'none';
-  a.href = url;
-  // the filename you want
-  a.download = 'todo-1.pdf';
-  document.body.appendChild(a);
-  a.click();
-  window.URL.revokeObjectURL(url);
-  alert('your file has downloaded!'); // or you know, something with better UX...
-  })
-});
+
+
+function myFunction() {
+  var x = document.getElementById("creationDateFromCampaign").value;
+  var p = x.split(/\D/g)
+  p = [p[2],p[1],p[0] ].join("-")
+  var y = document.getElementById("creationDateToCampaign").value;
+  var r = y.split(/\D/g)
+  r = [r[2],r[1],r[0] ].join("-")
+
+  window.open('http://54.243.203.166:8090/api/balances/pdf/generate/'+p+'+'+r)
+}
+
+
 </script>
 
